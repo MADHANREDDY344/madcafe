@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Small Café</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+   <body>
+     <header>
+        <h2>My Café</h2>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="reserve.html">Reservations</a>
+        <a href="offers.html" class="active">Offers</a>
+        <a href="cart.html" id="cart-link">Cart🛒 (<span id="cart-count">0</span>)</a>
+        
+
+        </nav>
+    </header>
+
+<h1 style="text-align:center;">Reserve a Table</h1>
+
+<form>
+    <label>Name</label>
+    <input type="text" required>
+
+    <label>Date</label>
+    <input type="date" required>
+
+    <label>Time</label>
+    <input type="time" required>
+
+    <label>Guests</label>
+    <input type="number" min="1" value="1">
+
+    <button type="submit">Confirm</button>
+</form>
+
+<script>
+    const form = document.querySelector('form');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        alert("Your table has been successfully booked!");
+
+        form.reset();
+    });
+</script>
+
+ <footer>
+    <div class="footer-container">
+        <div class="footer-about">
+            <h3>My Café</h3>
+            <p>Experience the best coffee and Beautiful  ambiance.<br> Visit us or book your table now!</p>
+        </div>
+        <div class="footer-contact">
+            <h3>Contact Us</h3>
+            <p>📍 KPHB R.D 2, HYD</p>
+            <p>✉️ info@mycafe.com</p>
+            <p>📞 +91 73822 64468</p>
+        </div>
+        <div class="footer-nav">
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="reserve.html">Reservations</a>
+        <a href="offers.html" class="active">Offers</a>
+        <a href="cart.html">Cart</a>
+            
+        </div>
+        <div class="footer-social">
+            <h3>Follow Us</h3>
+            <a href="https://r.search.yahoo.com/_ylt=Awrx_w2YZTppFQIAt967HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644376/RO=10/RU=https%3a%2f%2fwww.facebook.com%2flogin.php%2f/RK=2/RS=RIoNTPE9IhRFp4uveSJgDRTaX4s-" target="_blank">🌐 Facebook</a>
+            <a href="https://r.search.yahoo.com/_ylt=Awr1QhXCZTppLAIAZ5i7HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644418/RO=10/RU=https%3a%2f%2ftwitter.com%2flogin/RK=2/RS=hdfaTRY_paxqb7vtAAe3HXLNOHc-" target="_blank">🐦 Twitter</a>
+            <a href="https://r.search.yahoo.com/_ylt=Awr1SkvZZTppFAIA9wO7HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644441/RO=10/RU=https%3a%2f%2fwww.instagram.com%2f/RK=2/RS=r.VPSB7yx5NOvW.fTksmLG.tQMQ-" target="_blank">📸 Instagram</a>
+        </div>
+        <div class="footer-about">
+        
+        </div>
+
+      
+  </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 My Café | All Rights Reserved
+    </div>
+</footer>
+</body>
+</html>
+
+   

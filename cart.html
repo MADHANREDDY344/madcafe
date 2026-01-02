@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Cart | My Café</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h2>My Café</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="reserve.html">Reservations</a>
+        <a href="offers.html">Offers</a>
+        <a href="cart.html" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+
+    </nav>
+</header>
+
+<h1 class="page-title">Your Cart</h1>
+
+<div class="cart-container" id="cartContainer"></div>
+
+
+<div class="total-section">
+    <h2 id="totalAmount">Total: ₹0</h2>
+</div>
+
+<script>
+function loadCart() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let container = document.getElementById("cartContainer");
+    container.innerHTML = "";
+
+    let total = 0;
+
+    cart.forEach((item, i) => {
+        total += item.price * item.qty;
+
+        container.innerHTML += `
+            <div class="cart-row">
+                <img src="${item.img}">
+                <div class="cart-info">
+                    <h3>${item.name}</h3>
+                    <p>₹${item.price}</p>
+                </div>
+
+                <input type="number" min="1" value="${item.qty}" class="qty-box" 
+                    onchange="updateQty(${i}, this.value)">
+
+                <span class="remove-btn" onclick="removeItem(${i})">Remove</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("totalAmount").innerHTML = "Total: ₹" + total;
+}
+
+function updateQty(index, newQty) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart[index].qty = parseInt(newQty);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+}
+
+function removeItem(index) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    loadCart();
+}
+
+loadCart();
+</script>
+
+    <!-- ORDER NOW BUTTON -->
+    <button class="order-btn" onclick="openPayment()">Order Now</button>
+</div>
+
+<!-- PAYMENT POPUP -->
+<div id="paymentBox" class="payment-box">
+    <div class="payment-content">
+
+        <h2>Choose Payment Method</h2>
+
+        <!-- OPTION 1: UPI SCAN & PAY -->
+        <div class="pay-section">
+            <h3>Scan & Pay (UPI)</h3>
+            <img src="images/upi.jpg" class="qr-img" alt="UPI QR Code">
+            <p>UPI ID: <strong>madhanreddy5557@ybl</strong></p>
+        </div>
+
+        <!-- OPTION 2: ONLINE PAYMENT (Razorpay) -->
+        <button id="rzp-button" class="online-btn">Pay Online</button>
+
+        <button class="close-btn" onclick="closePayment()">Close</button>
+    </div>
+</div>
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+function openPayment() {
+    document.getElementById("paymentBox").style.display = "flex";
+}
+
+function closePayment() {
+    document.getElementById("paymentBox").style.display = "none";
+}
+
+document.getElementById("rzp-button").onclick = function () {
+    let total = document.getElementById("totalAmount").innerText.replace("Total: ₹", "");
+
+    var options = {
+        "key": "RAZORPAY_KEY_HERE",
+        "amount": total * 100,
+        "currency": "INR",
+        "name": "My Café",
+        "description": "Food Order Payment",
+        "handler": function (response){
+            alert("Payment Successful!");
+            localStorage.removeItem("cart");
+            window.location.reload();
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+};
+</script>
+
+<div class="pay-buttons">
+    <button onclick="payWithGooglePay()" class="pay-btn gpay-btn"> <img src="images/google-pay.png">
+    Pay with Google Pay</button>
+    <button onclick="payWithPhonePe()" class=" pay-btn ppay-btn"> <img src="images/phonePAy.png">Pay with PhonePe</button>
+</div>
+<script>
+let upiID = "madhanreddy5557@ybl";  
+let name = "Madhan Reddy";         
+
+function getTotalAmount() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let total = 0;
+    cart.forEach(i => total += i.price * i.qty);
+    return total;
+}
+function payWithGooglePay() {
+    let amount = getTotalAmount();
+    let url ="gpay://upi/pay?pa=yourupi@bank&pn=YourName&am=100&cu=INR";
+        "upi://pay?pa=" + upiID +
+        "&pn=" + encodeURIComponent(name) +
+        "&am=" + amount +
+        "&cu=INR";
+
+    window.location.href = url; 
+}
+
+function payWithPhonePe() {
+    let amount = getTotalAmount();
+    let url = "phonepe://pay?pa=mycafe@ybl&pn=My%20Cafe&am=199&cu=INR";
+        "phonepe://pay?pa=" + upiID +
+        "&pn=" + encodeURIComponent(name) +
+        "&am=" + amount +
+        "&cu=INR";
+
+    window.location.href = url;
+}
+</script>
+</body>
+</html>
+ <footer>
+    <div class="footer-container">
+        <div class="footer-about">
+            <h3>My Café</h3>
+            <p>Experience the best coffee and Beautiful ambiance.<br> Visit us or book your table now!</p>
+        </div>
+        <div class="footer-contact">
+            <h3>Contact Us</h3>
+            <p>📍 KPHB R.D 2, HYD</p>
+            <p>✉️ info@mycafe.com</p>
+            <p>📞 +91 73822 64468</p>
+        </div>
+        <div class="footer-nav">
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="reserve.html">Reservations</a>
+        <a href="offers.html" class="active">Offers</a>
+        <a href="cart.html">Cart</a>
+            
+        </div>
+        <div class="footer-social">
+            <h3>Follow Us</h3>
+            <a href="https://r.search.yahoo.com/_ylt=Awrx_w2YZTppFQIAt967HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644376/RO=10/RU=https%3a%2f%2fwww.facebook.com%2flogin.php%2f/RK=2/RS=RIoNTPE9IhRFp4uveSJgDRTaX4s-" target="_blank">🌐 Facebook</a>
+            <a href="https://r.search.yahoo.com/_ylt=Awr1QhXCZTppLAIAZ5i7HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644418/RO=10/RU=https%3a%2f%2ftwitter.com%2flogin/RK=2/RS=hdfaTRY_paxqb7vtAAe3HXLNOHc-" target="_blank">🐦 Twitter</a>
+            <a href="https://r.search.yahoo.com/_ylt=Awr1SkvZZTppFAIA9wO7HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644441/RO=10/RU=https%3a%2f%2fwww.instagram.com%2f/RK=2/RS=r.VPSB7yx5NOvW.fTksmLG.tQMQ-" target="_blank">📸 Instagram</a>
+        </div>
+        <div class="footer-about">
+        
+        </div>
+
+      
+  </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 My Café | All Rights Reserved
+    </div>
+</footer>

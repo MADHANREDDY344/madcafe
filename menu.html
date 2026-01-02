@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Small Café</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+
+<div id="cart-popup">Added to cart!</div>
+
+<header>
+    <h2>My Café</h2>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="menu.html" class="active">Menu</a>
+        <a href="gallery.html">Gallery</a>
+        <a href="reserve.html">Reservations</a>
+        <a href="offers.html">Offers</a>
+        <a href="cart.html" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+    </nav>
+</header>
+
+<h1 style="text-align: center;">Our Menu</h1>
+
+<div class="menu-container" id="menuList"></div>
+
+
+<script>
+
+let menuItems = [
+    
+    {name:"Espresso", price:80, img:"images/espresso.jpg", category:"Coffee"},
+    {name:"Americano", price:90, img:"images/americano.jpg", category:"Coffee"},
+    {name:"Latte", price:130, img:"https://tse4.mm.bing.net/th/id/OIP.uMFOKjJu1ED5vMjn3P-sIwHaE3?pid=Api&P=0&h=180", category:"Coffee"},
+    {name:"Cappuccino", price:140, img:"http://www.ffactor.com/wp-content/uploads/2018/08/AdobeStock_202756131.jpeg", category:"Coffee"},
+    {name:"Mocha", price:150, img:"https://www.thedailymeal.com/img/gallery/the-classic-mocha-is-a-coffee-shop-staple-but-what-is-it/l-intro-1686048648.jpg", category:"Coffee"},
+    {name:"Flat White", price:120, img:"https://www.crazycoffeebean.com/wp-content/uploads/2022/03/Flat-white-vs-latte-scaled.jpg", category:"Coffee"},
+    {name:"Macchiato", price:110, img:"https://aboveaveragecoffee.com/wp-content/uploads/2021/05/Espresso-Macchiato-What-it-is-how-to-make-it-how-it-tastes.jpg", category:"Coffee"},
+    {name:"Black Coffee", price:70, img:"https://tse4.mm.bing.net/th/id/OIP.Qii47bcnferpyNYxo-pKPwHaE7?pid=Api&P=0&h=180", category:"Coffee"},
+
+
+    {name:"Cold Brew", price:150, img:"https://fnb.coffee/wp-content/uploads/2024/11/Cold-Brew-Coffee-2.webp", category:"Cold Coffee"},
+    {name:"Iced Latte", price:160, img:"https://www.alphafoodie.com/wp-content/uploads/2020/08/Iced-Latte-1-of-1-2.jpeg", category:"Cold Coffee"},
+    {name:"Iced Mocha", price:170, img:"https://www.ilcucinologo.com/static/78e60796973f7b927fde30e48158226c/iced-mocha.jpg", category:"Cold Coffee"},
+    {name:"Iced Americano", price:120, img:"https://static.vecteezy.com/system/resources/previews/023/010/467/large_2x/the-glass-of-ice-americano-coffee-in-the-black-background-with-ai-generated-free-photo.jpg", category:"Cold Coffee"},
+
+    
+    {name:"Hot Chocolate", price:140, img:"https://food-images.files.bbci.co.uk/food/recipes/hot_chocolate_78843_16x9.jpg", category:"Tea & Hot Drinks"},
+    {name:"Tea", price:30, img:"https://cdn.cdnparenting.com/articles/2019/01/11184202/1024718095-H.jpg", category:"Tea & Hot Drinks"},
+    {name:"Green Tea", price:40, img:"https://tse4.mm.bing.net/th/id/OIP.O54xMDBfIhsF_IRX0qxxUgHaEK?pid=Api&P=0&h=180", category:"Tea & Hot Drinks"},
+    {name:"Lemon Tea", price:50, img:"https://i.pinimg.com/originals/1a/39/f4/1a39f4a400ba206d743e4ec8a1b69dd5.jpg", category:"Tea & Hot Drinks"},
+
+    
+    {name:"Muffin", price:60, img:"https://static.onecms.io/wp-content/uploads/sites/43/2022/05/19/228553-MoistChocolateMuffins-mfs-2X3-0923.jpg", category:"Bakery"},
+    {name:"Chocolate Cake", price:120, img:"https://www.cookingclassy.com/wp-content/uploads/2022/04/easy-chocolate-cake-2.jpg", category:"Bakery"},
+    {name:"Brownie", price:70, img:"https://tse4.mm.bing.net/th/id/OIP.TVFaHY8YDTU18BHJJM2lNQHaE8?pid=Api&P=0&h=180", category:"Bakery"},
+    {name:"Cheesecake", price:150, img:"https://stateofdinner.com/wp-content/uploads/2023/03/philadelphia-cheesecake-featured-1024x1024.jpg", category:"Bakery"},
+
+   
+    {name:"Sandwich", price:80, img:"https://curiosityuntamed.com/wp-content/uploads/2021/06/sandwich-stacked.jpg", category:"Snacks"},
+    {name:"Veg Roll", price:50, img:"https://manjulaskitchen.com/wp-content/uploads/vegetable_kathi_roll.jpg", category:"Snacks"},
+    {name:"French Fries", price:90, img:"https://tse2.mm.bing.net/th/id/OIP.GqUvr8wmgKYa7LL8YpnGMAHaE7?pid=Api&P=0&h=180", category:"Snacks"},
+    {name:"Pasta", price:160, img:"https://images.unsplash.com/photo-1525755662778-989d0524087e?w=600", category:"Snacks"},
+    {name:"Chicken Puff", price:70, img:"https://img.taste.com.au/5nQ57nN3/taste/2016/11/cheesy-vegie-and-bacon-parcels-97324-1.jpeg", category:"Snacks"},
+    {name:"Burger", price:150, img:"https://images.unsplash.com/photo-1550547660-d9450f859349?w=600", category:"Snacks"},
+
+    
+    {name:"Milkshake", price:130, img:"https://ichef.bbci.co.uk/food/ic/food_16x9_1600/recipes/banana_milkshake_73300_16x9.jpg", category:"Shakes"},
+    {name:"Strawberry Shake", price:150, img:"https://www.thehungrybites.com/wp-content/uploads/2023/06/Strawberry-milkshake-frappuccino-featured.jpg", category:"Shakes"},
+    {name:"Oreo Shake", price:160, img:"https://savoredsips.com/wp-content/uploads/2021/06/oreo-milkshake-featured.jpg", category:"Shakes"},
+
+    
+    {name:"Water Bottle", price:20, img:"https://5.imimg.com/data5/SELLER/Default/2023/5/304907193/SL/UN/HW/93175605/bisleri-250-ml-mineral-water-bottle-1000x1000.jpg", category:"Drinks"},
+    {name:"Fruit Juice", price:60, img:"https://static.vecteezy.com/system/resources/previews/022/454/670/large_2x/mix-fruit-juice-in-a-glass-with-fresh-fruits-generative-ai-free-photo.jpg", category:"Drinks"},
+    {name:"Lemon Soda", price:50, img:"https://rumkisgoldenspoon.com/wp-content/uploads/2023/07/Masala-nimbu-soda.jpg", category:"Drinks"},
+    {name:"Cool Drinks", price:40, img:"https://images.freekaamaal.com/post_images/1600942117.jpg", category:"Drinks"}
+];
+
+
+
+
+let menuDiv = document.getElementById("menuList");
+
+let lastCategory = "";
+
+menuItems.forEach(item => {
+
+    
+    if (item.category !== lastCategory) {
+        menuDiv.innerHTML += `
+            <h2 class="menu-category-title">${item.category}</h2>
+        `;
+        lastCategory = item.category;
+    }
+
+    
+    menuDiv.innerHTML += `
+        <div class="menu-item">
+            <img src="${item.img}" alt="${item.name}">
+            <h3>${item.name}</h3>
+            <p class="price">₹${item.price}</p>
+            <button class="add-cart-btn">Add to Cart</button>
+        </div>
+    `;
+});
+
+
+function flyToCart(img) {
+    const cartIcon = document.getElementById("cart-link");
+    let imgRect = img.getBoundingClientRect();
+    let cartRect = cartIcon.getBoundingClientRect();
+
+    let flyingImg = img.cloneNode(true);
+    flyingImg.classList.add("fly-img");
+
+    flyingImg.style.left = imgRect.left + "px";
+    flyingImg.style.top = imgRect.top + "px";
+
+    document.body.appendChild(flyingImg);
+
+    setTimeout(() => {
+        flyingImg.style.transform = 
+          `translate(${cartRect.left - imgRect.left}px, ${cartRect.top - imgRect.top}px) scale(0.15)`;
+        flyingImg.style.opacity = "0";
+    }, 20);
+
+    setTimeout(() => flyingImg.remove(), 900);
+}
+
+
+
+function showPopupNearCart() {
+    const cartBtn = document.getElementById("cart-link");
+    const popup = document.getElementById("cart-popup");
+
+    let rect = cartBtn.getBoundingClientRect();
+
+    popup.style.left = rect.right + 10 + "px";
+    popup.style.top = rect.top + "px";
+    popup.style.display = "block";
+    popup.style.opacity = "1";
+
+    setTimeout(() => {
+        popup.style.opacity = "0";
+        setTimeout(() => popup.style.display = "none", 300);
+    }, 1200);
+}
+
+
+
+let cartCount = 0;
+
+function addToCart(name, price, img, btn) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let exists = cart.find(i => i.name === name);
+
+    if (exists) {
+        exists.qty++;
+    } else {
+        cart.push({ name, price, img, qty: 1 });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    cartCount++;
+    document.getElementById("cart-count").textContent = cartCount;
+
+    flyToCart(btn.parentElement.querySelector("img"));
+    showPopupNearCart();
+}
+
+
+document.addEventListener("click", function(e) {
+    if (e.target.classList.contains("add-cart-btn")) {
+        let card = e.target.closest(".menu-item");
+        let name = card.querySelector("h3").textContent;
+        let price = parseInt(card.querySelector(".price").textContent.replace("₹", ""));
+        let img = card.querySelector("img").src;
+
+        addToCart(name, price, img, e.target);
+    }
+});
+</script>
+<footer>
+    <div class="footer-container">
+        <div>
+            <h3>My Café</h3>
+            <p>Experience the best coffee and Beautiful ambiance.<br>Visit us or book your table now!</p>
+        </div>
+
+       <div>
+            <h3>Contact Us</h3>
+            <p>📍 KPHB R.D 2, HYD</p>
+            <p>✉ info@mycafe.com</p>
+            <p>📞 +91 73822 64468</p>
+        </div>
+
+        <div>
+            <h3>Quick Links</h3>
+            <a href="index.html">Home</a>
+            <a href="menu.html">Menu</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="reserve.html">Reservations</a>
+            <a href="offers.html">Offers</a>
+            <a href="cart.html">Cart</a>
+        </div>
+
+        <div>
+            <h3>Follow Us</h3>
+            <a href="https://r.search.yahoo.com/_ylt=Awrx_w2YZTppFQIAt967HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644376/RO=10/RU=https%3a%2f%2fwww.facebook.com%2flogin.php%2f/RK=2/RS=RIoNTPE9IhRFp4uveSJgDRTaX4s-" target="_blank">🌐 Facebook</a>
+            <a href="https://r.search.yahoo.com/_ylt=Awr1QhXCZTppLAIAZ5i7HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644418/RO=10/RU=https%3a%2f%2ftwitter.com%2flogin/RK=2/RS=hdfaTRY_paxqb7vtAAe3HXLNOHc-" target="_blank">🐦 Twitter</a>
+            <a href="https://r.search.yahoo.com/_ylt=Awr1SkvZZTppFAIA9wO7HAx.;_ylu=Y29sbwNzZzMEcG9zAzEEdnRpZAMEc2VjA3Ny/RV=2/RE=1766644441/RO=10/RU=https%3a%2f%2fwww.instagram.com%2f/RK=2/RS=r.VPSB7yx5NOvW.fTksmLG.tQMQ-" target="_blank">📸 Instagram</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 My Café | All Rights Reserved
+    </div>
+</footer>
+
+</body>
+</html>
